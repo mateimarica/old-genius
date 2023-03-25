@@ -1,0 +1,27 @@
+{
+	"manifest_version": 3,
+	"name": "Genius - Old Song Page Switcher",
+	"version": "1.0",
+	"description": "Switch between Genius's redesign and the old song page.",
+	"minimum_chrome_version": "101",
+	"action": {
+		"default_popup": "popup/popup.html"
+	},
+	"content_scripts": [
+		{
+			"js": ["scripts/content.js"],
+			"matches": [
+				"*://genius.com/*"
+			]
+		}
+	],
+	"background": {
+		"service_worker": "scripts/background.js"
+	},
+	"permissions": [
+		"declarativeNetRequest"
+	],
+	"host_permissions": [
+		"*://genius.com/*"
+	]
+  }
