@@ -1,9 +1,26 @@
 
-
 const currentUrl = new URL(location.toString());
 currentUrl.searchParams.delete('bagon');
 const cleanedUrl = currentUrl.toString();
 window.history.replaceState({ path: cleanedUrl }, '', cleanedUrl);
+//console.log(chrome.runtime.onMessage);
+
+
+let regex;
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+	if (message.origin === 'stateToggled') {
+		if (!regex) await initRegex(); // Load regex if we don't have it
+		if (regex.test(location.href)) location.reload(); // Reload the page if match is found
+	}
+});
+
+async function initRegex() {
+	const src = chrome.runtime.getURL('scripts/regex.mjs');
+	regex = new RegExp((await import(src)).default);
+}
+
+// 	return true;
+// });
 
 // const allLinks = document.querySelectorAll('a[href^="https://genius.com"]');
 // console.log(allLinks.length)

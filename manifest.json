@@ -1,6 +1,8 @@
 {
+	"author": "mateimarica.dev@gmail.com",
 	"manifest_version": 3,
-	"name": "Genius - Old Song Page Switcher",
+	"name": "Old Genius - Song Page Switcher",
+	"short_name": "Old Genius",
 	"version": "1.0",
 	"description": "Switch between Genius's redesign and the old song page.",
 	"minimum_chrome_version": "101",
@@ -15,19 +17,29 @@
 	},
 	"content_scripts": [
 		{
-			"js": ["scripts/content.js"],
+			"js": [
+				"scripts/content.js"
+			],
 			"matches": [
 				"*://genius.com/*"
 			]
 		}
 	],
 	"background": {
-		"service_worker": "scripts/background.js"
+		"service_worker": "scripts/background.mjs",
+		"type": "module"
 	},
 	"permissions": [
-		"declarativeNetRequest"
+		"declarativeNetRequest",
+		"storage"
 	],
 	"host_permissions": [
 		"*://genius.com/*"
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["scripts/regex.mjs"],
+			"matches": ["*://genius.com/*"]
+		}
 	]
-  }
+}
