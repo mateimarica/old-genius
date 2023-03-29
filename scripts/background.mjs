@@ -1,9 +1,12 @@
+"use strict";
+
 import regex from './regex.mjs';
 
 // Old-song-page rule and its id
 const id = 1;
 const rule = {
 	id: id,
+	priority: 100,
 	condition: {
 		requestDomains: ['genius.com'],
 		requestMethods: ['get'],
@@ -21,59 +24,6 @@ const rule = {
 		}
 	}
 };
-
-// const callback = (details) => {
-// 	if (lyricsRegex.test(details.url) || annotationRegex.test(details.url)) {
-// 	   return {
-// 		  redirectUrl: "hen"
-// 	   }
-// 	}
-// };
-
-// const filter = { 
-// 	urls: [
-// 		"*://genius.com"
-// 	]
-// };
-
-// // "blocking" ensures request is blocked until the callback function returns. We need this for the redirect
-// // See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest
-// const extraInfoSpec = ["blocking"];
-
-// chrome.webRequest.onBeforeRequest.addListener(callback, filter, extraInfoSpec);
-
-// a={
-//     "id": 4,
-//     "priority": 1,
-//     "action": { "type": "redirect", "redirect": { "url": "https://example.com" } },
-//     "condition": { "urlFilter": "google.com", "resourceTypes": ["main_frame"] }
-// }
-// b=[
-// 	{
-// 	  "id": 1,
-// 	  "priority": 1,
-// 	  "action": {
-// 		"type": "redirect",
-// 		"redirect": {
-// 		  "transform": {
-// 			"queryTransform": {
-// 			  "addOrReplaceParams": [{ "key": "test", "value": "123" }]
-// 			}
-// 		  }
-// 		}
-// 	  },
-// 	  "condition": {
-// 		"urlFilter": "https://example.com",
-// 		"resourceTypes": ["main_frame"],
-// 	  }
-// 	}
-//   ]
-
-// chrome.storage.onChanged.addListener((changes, namespace) => {
-// 	if (changes.enabled.newValue !== changes.enabled.oldValue) {
-// 		toggleRule()
-// 	}
-// });
 
 // Listens for installs and updates
 chrome.runtime.onInstalled.addListener((details) => {
@@ -112,11 +62,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		});
 	}
 
-	
-	return true;
+	return true; // do I need this?
 });
-
-
 
 /**
  * Toggle the old-song-page rule.

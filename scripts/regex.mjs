@@ -1,3 +1,5 @@
+"use strict";
+
 // Annotation URLs, like https://genius.com/5140304
 // Matches strings containing genius.com/\<number>
 const annotationRegex = /genius\.com\/[0-9]+/; 

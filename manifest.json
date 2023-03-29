@@ -1,7 +1,7 @@
 {
 	"author": "mateimarica.dev@gmail.com",
 	"manifest_version": 3,
-	"name": "Old Genius - Song Page Switcher",
+	"name": "Old Genius (Song Page Switcher)",
 	"short_name": "Old Genius",
 	"version": "1.0",
 	"description": "Switch between Genius's redesign and the old song page.",
