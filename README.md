@@ -17,8 +17,8 @@ Genius allows you to switch between the old and new pages. However, this state d
 - Removes the "go to the old/new song page" buttons.
 
 ## Installation
-- Chrome/Edge (coming soon)
-- Firefox (coming soon)
+- Chrome/Edge: check the [latest release.](https://github.com/mateimarica/old-genius/releases)
+- Firefox: coming soon.
 
 ## Disclaimers
 - You have to be signed in to genius.com for this extension to work. Genius doesn't allow access to the old song page to non-signed-in users.
