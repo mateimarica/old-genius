@@ -20,12 +20,9 @@
 	},
 	"content_scripts": [
 		{
-			"js": [
-				"scripts/content.js"
-			],
-			"matches": [
-				"*://genius.com/*"
-			]
+			"js": ["scripts/content.js"],
+			"css": ["styles/content.css"],
+			"matches": ["*://genius.com/*"]
 		}
 	],
 	"background": {

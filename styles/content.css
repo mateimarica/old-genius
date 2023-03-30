@@ -1,0 +1,4 @@
+/* Gets rid of "View new/old song page" button */
+a[class^='OptOutButton'], a[class*=' OptOutButton'], a[class^='react_song_page_preview_link'], a[class*=' react_song_page_preview_link'] {
+	display: none !important;
+}
