@@ -3,7 +3,7 @@
 	"manifest_version": 3,
 	"name": "Old Genius (Song Page Switcher)",
 	"short_name": "Old Genius",
-	"version": "1.0",
+	"version": "1.0.1",
 	"description": "Switch between Genius's redesign and the old song page.",
 	"minimum_chrome_version": "101",
 	"content_security_policy": {
@@ -22,7 +22,7 @@
 		{
 			"js": ["scripts/content.js"],
 			"css": ["styles/content.css"],
-			"matches": ["*://genius.com/*"]
+			"matches": ["https://genius.com/*"]
 		}
 	],
 	"background": {
@@ -34,12 +34,12 @@
 		"storage"
 	],
 	"host_permissions": [
-		"*://genius.com/*"
+		"https://genius.com/*"
 	],
 	"web_accessible_resources": [
 		{
 			"resources": ["scripts/regex.mjs"],
-			"matches": ["*://genius.com/*"]
+			"matches": ["https://genius.com/*"]
 		}
 	]
 }
