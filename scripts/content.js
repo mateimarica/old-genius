@@ -10,8 +10,6 @@ window.history.replaceState({ path: cleanedUrl }, '', cleanedUrl);
 // If we're on a lyric or annoation page, the page will get reload automatically
 let regex;
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-	console.log("messaged recieved:" + message.toString());
-	
 	if (message.event === 'toggleCompleted') {
 		if (!regex) await initRegex(); // Load regex if we don't have it
 		if (regex.test(location.href)) location.reload(); // Reload the page if match is found

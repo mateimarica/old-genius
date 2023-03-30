@@ -35,10 +35,6 @@ switchBtn.addEventListener('click', (event) => {
 			// Set new state of toggle button once we know the switch was successful
 			setSwitch(enabled);
 			
-			console.log({
-				event: 'toggleCompleted',
-				enabled: enabled
-			})
 			// Re-enable the checkbox
 			switchBtn.disabled = false;
 		}	

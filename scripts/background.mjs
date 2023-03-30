@@ -37,6 +37,10 @@ chrome.runtime.onInstalled.addListener((details) => {
 		removeRuleIds: [id],
 		addRules: [rule]
 	});
+
+	// Icon gets reset when reloading extensions.
+	// Not sure if it gets reset any other time, so just to be safe.
+	chrome.storage.local.get('enabled').then((result) => setIcon(result.enabled));
 });
 
 // Message listener
@@ -59,6 +63,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 						// So just gobble up the error instead
 					}
 				});
+
+				setIcon(enabled);
 
 				sendResponse({ successful: true });
 			});
@@ -83,4 +89,11 @@ function toggleRule(enabled) {
 	      { removeRuleIds: [id] };
 
 	return chrome.declarativeNetRequest.updateDynamicRules(options);
+}
+
+// Set icon enabled/disabled
+function setIcon(enabled) {
+	chrome.action.setIcon({
+		path: enabled ? '../icons/icon_16.png' : '../icons/icon_16_disabled.png'
+	});
 }
