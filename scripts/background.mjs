@@ -29,7 +29,7 @@ const rule = {
 chrome.runtime.onInstalled.addListener((details) => {
 	// Enable old page on install
 	if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
-		chrome.storage.local.set({ enabled: true });
+		chrome.storage.local.set({ enabled: true, oneTimeConfirm: true });
 	}
 
 	// Refresh rule

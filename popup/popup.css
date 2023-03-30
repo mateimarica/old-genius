@@ -98,3 +98,43 @@ a {
 a:hover, a:active { text-decoration: underline; }
 
 a:active { color: #6d8ec4; }
+
+#confirmation {
+	display: none;
+	position: fixed;
+	background-color: rgba(13, 17, 23,.95);
+	z-index: 99;
+	backdrop-filter: blur(2px);
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
+	top: 1px;
+}
+
+#confirmation > div {
+	position: relative;
+	color: whitesmoke;
+	font-size: 16px;
+	user-select: none;
+	text-align: center;
+	padding: 0 10px;
+	width: calc(100% - 20px);
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.button {
+	all: unset;
+	margin-top: 20px;
+	width: 100px;
+	height: 25px;
+	border: 1px solid gray;
+	border-radius: 7px;
+	transition: background-color 100ms linear;
+	background-color: #203f5c;
+	color: white;
+	cursor: pointer;
+}
+
+.button:hover:not(:active) {
+	background-color: #2e577e;
+}

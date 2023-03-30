@@ -8,7 +8,9 @@ const switchBtn = $('#switch'),
       infoTextState = $('#infoText > b');
 
 // Set the state of the toggle switch
-chrome.storage.local.get('enabled').then((result) => {
+chrome.storage.local.get(['enabled', 'oneTimeConfirm']).then((result) => {
+	if (result.oneTimeConfirm) showConfirmation();
+
 	setSwitch(result.enabled);
 
 	// Wait 50ms before allowing transitions
@@ -50,4 +52,17 @@ function setSwitch(enabled) {
 	 	switchBtn.removeAttribute('checked');
 
 	infoTextState.textContent = enabled ? "ON" : "OFF";
+}
+
+// This is the one-time confirmation
+function showConfirmation() {
+	const confirmation = $('#confirmation'),
+	      confirmBtn = $('#confirmBtn');
+
+	confirmation.style.display = 'block';
+
+	confirmBtn.addEventListener('click', () => {
+		confirmation.style.display = 'none';
+		chrome.storage.local.set({ oneTimeConfirm: false });
+	});
 }

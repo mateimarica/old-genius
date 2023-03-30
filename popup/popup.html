@@ -2,26 +2,32 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./popup.css" />
 	</head>
 	<body>
-
 		<div class="container centered">
 			<label id="switch" class="switch" checked>
 				<span id="slider" class="slider noTransition"></span>
 			</label>
 		</div>
 
-    <div class="separator"></div>
+		<div class="separator"></div>
 
 		<div id="infoText">Old song page is <b>ON</b></div>
 
-    <div class="separator"></div>
+		<div class="separator"></div>
 
-    <a href="https://genius.com/Eminem-stan-lyrics" target="_blank">Test page</div>
-		
+		<a href="https://genius.com/Eminem-stan-lyrics" target="_blank">Test page</a>
+
+		<div id="confirmation">
+			<div>
+				<b>Note:</b>
+				<div>The old song page only works when you're signed in to genius.com</div>
+				<button id="confirmBtn" class="button">Got it!</button>
+			</div>
+		</div>
+
 		<script src="./popup.js" type="module"></script>
 	</body>
 </html>
