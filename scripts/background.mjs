@@ -41,14 +41,17 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 // Message listener
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-	if (message.origin === 'switchBtn') {
+	if (message.event === 'toggleTriggered') {
 		const enabled = message.enabled;
 		chrome.storage.local.set({ enabled: enabled }).then(() => {
 			toggleRule(enabled).then(() => {
 
 				chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
 					try {
-						await chrome.tabs.sendMessage(tabs[0].id, {origin: 'stateToggled'})
+						await chrome.tabs.sendMessage(tabs[0].id, {
+							event: 'toggleCompleted',
+							enabled: enabled
+						});
 					} catch (error) {
 						// chrome.tabs.sendMessage will throw an error if 
 						// the given tab has no listener registered.
