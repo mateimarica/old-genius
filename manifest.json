@@ -3,8 +3,8 @@
 	"manifest_version": 3,
 	"name": "Old Genius (Song Page Switcher)",
 	"short_name": "Old Genius",
-	"version": "1.0.1",
-	"description": "Switch between Genius's redesign and the old song page.",
+	"version": "1.0.2",
+	"description": "Switch between Genius's redesign and old song page, without it resetting when you click on another page.",
 	"minimum_chrome_version": "101",
 	"content_security_policy": {
 		"extension_pages": "default-src 'self'; frame-ancestors 'none';"

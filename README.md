@@ -1,5 +1,5 @@
 <h1 align="center">Old <sub><img src="https://raw.githubusercontent.com/mateimarica/public/master/old-genius/icon.png" height="38" width="38"></sub>enius (Song Page Switcher)</h1>
-<p align="center">A browser extension to easily switch between the new and old song page on <a href="https://genius.com">genius.com</a></p>
+<p align="center">A browser extension to easily switch between the new and old song page on <a href="https://genius.com">Genius</a></p>
 
 <div align="center">
 <img width="75%" src="https://raw.githubusercontent.com/mateimarica/public/master/old-genius/showcase-rounded.png" alt="Screenshot of the extension in action">
@@ -17,8 +17,8 @@ Genius allows you to switch between the old and new pages. However, this state d
 - Removes the "go to the old/new song page" buttons.
 
 ## Installation
-- Chrome/Edge: check the [latest release.](https://github.com/mateimarica/old-genius/releases)
-- Firefox: coming soon.
+- Chrome/Edge: Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/old-genius-song-page-swit/dgdnchkkkknfdahaehnkfifchgnoidjj) or check the [latest release](https://github.com/mateimarica/old-genius/releases) to install manually.
+- Firefox: -coming soon-
 
 ## Disclaimers
 - You have to be signed in to genius.com for this extension to work. Genius doesn't allow access to the old song page to non-signed-in users.
