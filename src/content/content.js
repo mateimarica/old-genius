@@ -18,6 +18,6 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 
 // Dynamically import the regex only when we need it
 async function initRegex() {
-	const src = chrome.runtime.getURL('scripts/regex.mjs');
+	const src = chrome.runtime.getURL('modules/regex.mjs');
 	regex = (await import(src)).default;
 }

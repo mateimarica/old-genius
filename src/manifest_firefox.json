@@ -5,7 +5,6 @@
 	"short_name": "Old Genius",
 	"version": "1.0.2",
 	"description": "Switch between Genius's redesign and old song page, without it resetting when you click on another page.",
-	"minimum_chrome_version": "101",
 	"content_security_policy": "default-src 'self'; frame-ancestors 'none';",
 	"browser_action": {
 		"default_popup": "popup/popup.html"
@@ -34,6 +33,6 @@
 		"https://genius.com/*"
 	],
 	"web_accessible_resources": [
-		"scripts/regex.mjs"
+		"modules/regex.mjs"
 	]
 }

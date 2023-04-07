@@ -1,6 +1,6 @@
 "use strict";
 
-import regex from './regex.mjs';
+import regex from '../modules/regex.mjs';
 
 // On launch, check if enabled and set icon.
 // Only call setIcon() if disabled, since the enabled icon is default
