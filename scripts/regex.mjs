@@ -9,6 +9,6 @@ const annotationRegex = /genius\.com\/[0-9]+/;
 const lyricsRegex = /genius\.com\/[^\/]+lyrics/;
 
 // Regexes combined with a logical OR
-const regex = annotationRegex.source + '|' + lyricsRegex.source;
+const regex = new RegExp(annotationRegex.source + '|' + lyricsRegex.source);
 
 export default regex;

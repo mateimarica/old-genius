@@ -59,7 +59,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 							enabled: enabled
 						});
 					} catch (error) {
-						// chrome.tabs.sendMessage will throw an error if 
+						// chrome.tabs.sendMessage will throw an error if
 						// the given tab has no listener registered.
 						// (that is, if it's not a genius.com tab)
 						// So just gobble up the error instead
@@ -78,7 +78,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 /**
  * Toggle the old-song-page rule.
- * @param {Boolean} enabled 
+ * @param {Boolean} enabled
  * @returns {Promise} a promise
  */
 function toggleRule(enabled) {
