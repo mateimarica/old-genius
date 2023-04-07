@@ -2,7 +2,13 @@
 
 import regex from './regex.mjs';
 
-// Old-song-page rule and its id
+// On launch, check if enabled and set icon.
+// Only call setIcon() if disabled, since the enabled icon is default
+chrome.storage.local.get('enabled').then((result) =>
+	result.enabled === false && setIcon(result.enabled)
+);
+
+// Initialize old-song-page rule and its id
 const id = 1;
 const rule = {
 	id: id,
@@ -37,10 +43,6 @@ chrome.runtime.onInstalled.addListener((details) => {
 		removeRuleIds: [id],
 		addRules: [rule]
 	});
-
-	// Icon gets reset when reloading extensions.
-	// Not sure if it gets reset any other time, so just to be safe.
-	chrome.storage.local.get('enabled').then((result) => setIcon(result.enabled));
 });
 
 // Message listener
@@ -71,7 +73,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		});
 	}
 
-	return true; // do I need this?
+	return true; // Need this, otherwise sendResponse() won't work
 });
 
 /**
