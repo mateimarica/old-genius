@@ -7,6 +7,7 @@ body {
 	background-color: #222222;
 	border: 1px solid rgb(117, 117, 117);
 	padding: 20px 0 15px; /* left&right top&bottom */
+	font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
 .centered {
@@ -92,6 +93,7 @@ body {
 a {
 	color: #8ab4f8;
     text-decoration: none;
+	font-size: 12px;
 }
 
 a:hover, a:active { text-decoration: underline; }
