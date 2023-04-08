@@ -1,21 +1,22 @@
-const fs = require('fs'),
-      path = require('path'),
-      glob = require('glob'),
-      archiver = require('archiver');
+'use strict';
+
+import fs from 'fs';
+import path from 'path';
+import glob from 'glob';
+import archiver from 'archiver';
+import { rootDir, buildDir, srcDir } from './dirs.mjs';
 
 // Exit handler since some function calls are async
+let exitMsg; // This string will be printed upon exit
 process.on('exit', function(options, exitCode) {
-	if (exitCode === 0) {
-		// \x1b[32m = set terminal color to green
-		// %s       = format specifier for the string to be printed
-		// \x1b[0m  = reset terminal color
-		// See https://stackoverflow.com/a/41407246
-		console.log('\x1b[32m%s\x1b[0m', 'Successfully built.');
-	}
+	// Example:
+	// \x1b[32m = set terminal color to green
+	// %s       = format specifier for the string to be printed
+	// \x1b[0m  = reset terminal color
+	// See https://stackoverflow.com/a/41407246
+	const printColor = exitCode === 0 ? '\x1b[32m%s\x1b[0m' : '\x1b[31m%s\x1b[0m';
+	console.log(printColor, exitMsg);
 }.bind(null, { cleanup: true }));
-
-const srcDir   = path.join(__dirname, 'src'),
-      buildDir = path.join(__dirname, 'build');
 
 // These names must be exact like the filename suffixes
 // Eg: popup_chrome.js, popup_firefox.js,
@@ -26,9 +27,11 @@ const browsers = [
 	},
 	{
 		name: 'firefox',
-		archiveExt: 'xpi'
+		archiveExt: null
 	}
 ];
+
+validateVersions();
 
 try {
 	fs.rmSync(buildDir, { recursive: true }); // Remove old build dir
@@ -39,8 +42,39 @@ try {
 		buildPacked(unpackedDir, browser);
 	});
 } catch (err) {
-	console.error('\x1b[31m%s\x1b[0m', 'Failed to build: ' + err);
+	exitMsg = 'Failed to build: ' + err;
 	process.exit(1);
+}
+
+// Ensure that all version variables are the same
+function validateVersions() {
+	const versions = [];
+
+	// Load the package.json
+	const packageFilename = 'package.json';
+	const packageJSON = JSON.parse(
+		fs.readFileSync(
+			path.join(rootDir, packageFilename)
+		)
+	);
+	versions.push({ name: packageFilename, version: packageJSON.version });
+
+	// Load every manifest_<browser>.json
+	browsers.forEach(browser => {
+		const manifestFilename = `manifest_${browser.name}.json`;
+		const manifestJSON = JSON.parse(
+			fs.readFileSync(
+				path.join(srcDir, manifestFilename)
+			)
+		);
+		versions.push({ name: manifestFilename, version: manifestJSON.version });
+	});
+
+	// If not all the versions are the same,
+	if (!versions.every((val, i, arr) => val.version === versions[0].version)) {
+		exitMsg = 'Inconsistent versioning:\n' + JSON.stringify(versions, null, 2);
+		process.exit(1);
+	}
 }
 
 // Build the unpacked extension
@@ -60,7 +94,7 @@ function buildUnpacked(unpackedDir, browser) {
 		if (filepathObj.name.endsWith(`_${browser.name}`)) { // If the browser suffix matches, we keep it
 			filepathObj.name = filepathObj.name.substring( // Remove the browser suffix
 				0,
-				filepathObj.name.lastIndexOf("_")
+				filepathObj.name.lastIndexOf('_')
 			);
 
 			// Remove the base key (eg: "popup_chrome.js")
@@ -74,24 +108,29 @@ function buildUnpacked(unpackedDir, browser) {
 			fs.rmSync(filepathStr); // If not for this browser, delete
 		}
 	});
+
+	// Print browser name with first letter capitalized
+	console.log(browser.name[0].toUpperCase() + browser.name.slice(1) + ' unpacked directory built.');
 }
 
 // Add license as .txt to unpacked directory
 function addLicense(unpackedDir) {
-	const srcPath  = path.join(__dirname, 'LICENSE');
+	const srcPath  = path.join(rootDir, 'LICENSE');
 	const destPath = path.join(unpackedDir, 'LICENSE.txt');
 	fs.cpSync(srcPath, destPath); // Created unpacked dir
 }
 
 // Build the packed files for each distribution (zip, xpi)
 function buildPacked(unpackedDir, browser) {
-	let manifest = JSON.parse(
+	if (browser.archiveExt === null) return;
+
+	const manifestJSON = JSON.parse(
 		fs.readFileSync(
 			path.join(unpackedDir, 'manifest.json')
 		)
 	);
 
-	const zipName = `old-genius_${manifest.version}_${browser.name}.mv${manifest.manifest_version}.${browser.archiveExt}`;
+	const zipName = `old-genius_${manifestJSON.version}_${browser.name}.mv${manifestJSON.manifest_version}.${browser.archiveExt}`;
 	const outputPath = path.join(unpackedDir, '..', zipName);
 	const output = fs.createWriteStream(outputPath);
 
@@ -102,7 +141,7 @@ function buildPacked(unpackedDir, browser) {
 	});
 
 	archive.on('error', (err) => {
-		console.error('\x1b[31m%s\x1b[0m', 'Failed to pack: ' + err);
+		exitMsg = 'Failed to pack: ' + err;
 		process.exit(1);
 	});
 
@@ -116,3 +155,4 @@ function buildPacked(unpackedDir, browser) {
 	archive.finalize();
 }
 
+exitMsg = 'Build successful.';

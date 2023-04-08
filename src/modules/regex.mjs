@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Annotation URLs, like https://genius.com/5140304
 // Matches strings containing genius.com/\<number>

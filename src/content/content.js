@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Remove bagon=1 param from URL after load (cosmetic only)
 const currentUrl = new URL(location.toString());

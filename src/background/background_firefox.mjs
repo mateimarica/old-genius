@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import regex from '../modules/regex.mjs';
 
@@ -66,13 +66,13 @@ const beforeRequestCallback = (details) => {
 
 const beforeRequestFilter = {
 	urls: [
-		"https://genius.com/*"
+		'https://genius.com/*'
 	]
 };
 
 // "blocking" ensures request is blocked until the callback function returns. We need this for the redirect
 // See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest
-const extraInfoSpec = ["blocking"];
+const extraInfoSpec = ['blocking'];
 
 /**
  * Toggle the old-song-page rule.

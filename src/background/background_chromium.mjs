@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import regex from '../modules/regex.mjs';
 
@@ -64,7 +64,7 @@ const rule = {
 		requestDomains: ['genius.com'],
 		requestMethods: ['get'],
 		regexFilter: regex.source,
-		"resourceTypes": ["main_frame"]
+		resourceTypes: ['main_frame']
 	},
 	action: {
 		type: 'redirect',

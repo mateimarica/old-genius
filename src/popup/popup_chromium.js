@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // jQuery-like syntax for document-level queries
 const $ = document.querySelector.bind(document);
@@ -47,7 +47,7 @@ function setSwitch(enabled) {
 	 else
 	 	switchBtn.removeAttribute('checked');
 
-	infoTextState.textContent = enabled ? "ON" : "OFF";
+	infoTextState.textContent = enabled ? 'ON' : 'OFF';
 }
 
 // This is the one-time confirmation
