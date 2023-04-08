@@ -3,10 +3,12 @@
 import regex from '../modules/regex.mjs';
 
 // On launch, check if enabled and set icon.
-// Only call setIcon() if disabled, since the enabled icon is default
-browser.storage.local.get('enabled').then((result) =>
-	result.enabled === false && setIcon(result.enabled)
-);
+browser.runtime.onStartup.addListener(() => {
+	// Only call setIcon() if disabled, since the enabled icon is default
+	browser.storage.local.get('enabled').then((result) =>
+		result.enabled === false && setIcon(result.enabled)
+	);
+});
 
 // Listens for installs and updates
 browser.runtime.onInstalled.addListener((details) => {
@@ -49,12 +51,6 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 	return true; // Need this, otherwise sendResponse() won't work
 });
-
-// On launch, check if enabled and set icon.
-// Only call setIcon() if disabled, since the enabled icon is default
-browser.storage.local.get('enabled').then((result) =>
-	result.enabled === false && setIcon(result.enabled)
-);
 
 const beforeRequestCallback = (details) => {
 	if (regex.test(details.url)) {

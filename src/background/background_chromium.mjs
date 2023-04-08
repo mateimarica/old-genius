@@ -3,33 +3,12 @@
 import regex from '../modules/regex.mjs';
 
 // On launch, check if enabled and set icon.
-// Only call setIcon() if disabled, since the enabled icon is default
-chrome.storage.local.get('enabled').then((result) =>
-	result.enabled === false && setIcon(result.enabled)
-);
-
-// Initialize old-song-page rule and its id
-const id = 1;
-const rule = {
-	id: id,
-	priority: 100,
-	condition: {
-		requestDomains: ['genius.com'],
-		requestMethods: ['get'],
-		regexFilter: regex,
-		"resourceTypes": ["main_frame"]
-	},
-	action: {
-		type: 'redirect',
-		redirect: {
-			transform: {
-				queryTransform: {
-					addOrReplaceParams: [{ key: 'bagon', value: '1' }]
-				}
-			}
-		}
-	}
-};
+chrome.runtime.onStartup.addListener(() => {
+	// Only call setIcon() if disabled, since the enabled icon is default
+	chrome.storage.local.get('enabled').then((result) =>
+		result.enabled === false && setIcon(result.enabled)
+	);
+});
 
 // Listens for installs and updates
 chrome.runtime.onInstalled.addListener((details) => {
@@ -75,6 +54,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 	return true; // Need this, otherwise sendResponse() won't work
 });
+
+// Initialize old-song-page rule and its id
+const id = 1;
+const rule = {
+	id: id,
+	priority: 100,
+	condition: {
+		requestDomains: ['genius.com'],
+		requestMethods: ['get'],
+		regexFilter: regex.source,
+		"resourceTypes": ["main_frame"]
+	},
+	action: {
+		type: 'redirect',
+		redirect: {
+			transform: {
+				queryTransform: {
+					addOrReplaceParams: [{ key: 'bagon', value: '1' }]
+				}
+			}
+		}
+	}
+};
 
 /**
  * Toggle the old-song-page rule.

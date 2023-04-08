@@ -17,13 +17,13 @@
 	},
 	"content_scripts": [
 		{
-			"js": ["scripts/content.js"],
-			"css": ["styles/content.css"],
+			"js": ["content/content.js"],
+			"css": ["content/content.css"],
 			"matches": ["https://genius.com/*"]
 		}
 	],
 	"background": {
-		"page": "scripts/background.html",
+		"page": "background/background.html",
 		"persistent": false
 	},
 	"permissions": [
