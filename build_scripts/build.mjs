@@ -27,7 +27,7 @@ const browsers = [
 	},
 	{
 		name: 'firefox',
-		archiveExt: null
+		archiveExt: 'zip'
 	}
 ];
 

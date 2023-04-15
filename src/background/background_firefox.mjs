@@ -2,32 +2,32 @@
 
 import regex from '../modules/regex.mjs';
 
-// On launch, check if enabled and set icon.
-browser.runtime.onStartup.addListener(() => {
-	// Only call setIcon() if disabled, since the enabled icon is default
-	browser.storage.local.get('enabled').then((result) =>
-		result.enabled === false && setIcon(result.enabled)
-	);
-});
+// General initializing run, also runs when extension is set from disabled to enalbed
+initialize();
 
 // Listens for installs and updates
 browser.runtime.onInstalled.addListener((details) => {
 	// Enable old page and oneTimeConfirm on first install
 	if (details.reason === browser.runtime.OnInstalledReason.INSTALL) {
 		browser.storage.local.set({ enabled: true, oneTimeConfirm: true });
+		setRule(true);
+	} else {
+		initialize();
 	}
-
-	// Remove the rule and re-add it, just in case
-	toggleRule(false);
-	toggleRule(true);
 });
+
+// Set up rule and icon
+function initialize() {
+	setRule();
+	setIcon();
+}
 
 // Message listener
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.event === 'toggleTriggered') {
 		const enabled = message.enabled;
-		browser.storage.local.set({ enabled: enabled }).then(() => {
-			toggleRule(enabled);
+		browser.storage.local.set({ enabled: enabled }).then(async () => {
+			await setRule(enabled);
 
 			browser.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
 				try {
@@ -74,23 +74,34 @@ const beforeRequestFilter = {
 // See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/webRequest/onBeforeRequest
 const extraInfoSpec = ['blocking'];
 
-/**
- * Toggle the old-song-page rule.
- * @param {Boolean} enabled
- * @returns {Promise} a promise
- */
-function toggleRule(enabled) {
+// Add or remove the redirect rule
+ async function setRule(enabled) {
+	enabled = await validateEnabled(enabled);
+
 	// If enabled, add rule. If not, remove it
 	if (enabled) {
-		browser.webRequest.onBeforeRequest.addListener(beforeRequestCallback, beforeRequestFilter, extraInfoSpec);
+		if (!browser.webRequest.onBeforeRequest.hasListener(beforeRequestCallback)) {
+			browser.webRequest.onBeforeRequest.addListener(beforeRequestCallback, beforeRequestFilter, extraInfoSpec);
+		}
 	} else {
 		browser.webRequest.onBeforeRequest.removeListener(beforeRequestCallback);
 	}
 }
 
 // Set icon enabled/disabled
-function setIcon(enabled) {
+async function setIcon(enabled) {
+	enabled = await validateEnabled(enabled);
+
 	browser.browserAction.setIcon({
 		path: enabled ? '../icons/icon_16.png' : '../icons/icon_16_disabled.png'
 	});
+}
+
+// Ensure that "enabled" is not undefined and set it if it is
+async function validateEnabled(enabled) {
+	if (enabled === undefined) {
+		const results = await browser.storage.local.get('enabled');
+		enabled = results.enabled;
+	}
+	return enabled;
 }

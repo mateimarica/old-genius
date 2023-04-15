@@ -1,6 +1,6 @@
 {
   "name": "old-genius",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Extension to switch between Genius's redesign and old song page.",
   "scripts": {
     "init": "node -e \"require('fs').copyFile('template.env', '.env', ()=>{});\"",

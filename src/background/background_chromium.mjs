@@ -2,53 +2,51 @@
 
 import regex from '../modules/regex.mjs';
 
-// On launch, check if enabled and set icon.
-chrome.runtime.onStartup.addListener(() => {
-	// Only call setIcon() if disabled, since the enabled icon is default
-	chrome.storage.local.get('enabled').then((result) =>
-		result.enabled === false && setIcon(result.enabled)
-	);
-});
+// General initializing run, also runs when extension is set from disabled to enalbed
+initialize();
 
 // Listens for installs and updates
 chrome.runtime.onInstalled.addListener((details) => {
-	// Enable old page on install
+	// Enable old page and oneTimeConfirm on first install
 	if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
 		chrome.storage.local.set({ enabled: true, oneTimeConfirm: true });
+		setRule(true);
+	} else {
+		initialize();
 	}
-
-	// Refresh rule
-	chrome.declarativeNetRequest.updateDynamicRules({
-		removeRuleIds: [id],
-		addRules: [rule]
-	});
 });
+
+// Set up rule and icon
+function initialize() {
+	console.log('running');
+	setRule();
+	setIcon();
+}
 
 // Message listener
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.event === 'toggleTriggered') {
 		const enabled = message.enabled;
-		chrome.storage.local.set({ enabled: enabled }).then(() => {
-			toggleRule(enabled).then(() => {
+		chrome.storage.local.set({ enabled: enabled }).then(async () => {
+			await setRule(enabled);
 
-				chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-					try {
-						await chrome.tabs.sendMessage(tabs[0].id, {
-							event: 'toggleCompleted',
-							enabled: enabled
-						});
-					} catch (error) {
-						// chrome.tabs.sendMessage will throw an error if
-						// the given tab has no listener registered.
-						// (that is, if it's not a genius.com tab)
-						// So just gobble up the error instead
-					}
-				});
-
-				setIcon(enabled);
-
-				sendResponse({ successful: true });
+			chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+				try {
+					await chrome.tabs.sendMessage(tabs[0].id, {
+						event: 'toggleCompleted',
+						enabled: enabled
+					});
+				} catch (error) {
+					// chrome.tabs.sendMessage will throw an error if
+					// the given tab has no listener registered.
+					// (that is, if it's not a genius.com tab)
+					// So just gobble up the error instead
+				}
 			});
+
+			setIcon(enabled);
+
+			sendResponse({ successful: true });
 		});
 	}
 
@@ -78,12 +76,10 @@ const rule = {
 	}
 };
 
-/**
- * Toggle the old-song-page rule.
- * @param {Boolean} enabled
- * @returns {Promise} a promise
- */
-function toggleRule(enabled) {
+// Add or remove the redirect rule
+ async function setRule(enabled) {
+	enabled = await validateEnabled(enabled);
+	
 	// If enabled, add rule. If not, remove it
 	const options = enabled ?
 	      { 
@@ -96,8 +92,19 @@ function toggleRule(enabled) {
 }
 
 // Set icon enabled/disabled
-function setIcon(enabled) {
+async function setIcon(enabled) {
+	enabled = await validateEnabled(enabled);
+
 	chrome.action.setIcon({
 		path: enabled ? '../icons/icon_16.png' : '../icons/icon_16_disabled.png'
 	});
+}
+
+// Ensure that "enabled" is not undefined and set it if it is
+async function validateEnabled(enabled) {
+	if (enabled === undefined) {
+		const results = await chrome.storage.local.get('enabled');
+		enabled = results.enabled;
+	}
+	return enabled;
 }
