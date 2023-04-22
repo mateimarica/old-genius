@@ -2,26 +2,21 @@
 
 import regex from '../modules/regex.mjs';
 
-// General initializing run, also runs when extension is set from disabled to enalbed
-initialize();
+// Set icon every time background script runs
+// This covers setting the icon when enabling the extension
+setIcon();
+
+// Set icon every time chrome starts up
+chrome.runtime.onStartup.addListener(() => setIcon());
 
 // Listens for installs and updates
-chrome.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener((info) => {
 	// Enable old page and oneTimeConfirm on first install
-	if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+	if (info.reason === chrome.runtime.OnInstalledReason.INSTALL) {
 		chrome.storage.local.set({ enabled: true, oneTimeConfirm: true });
-		setRule(true);
-	} else {
-		initialize();
+		setRule();
 	}
 });
-
-// Set up rule and icon
-function initialize() {
-	console.log('running');
-	setRule();
-	setIcon();
-}
 
 // Message listener
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -45,7 +40,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			});
 
 			setIcon(enabled);
-
 			sendResponse({ successful: true });
 		});
 	}
@@ -79,7 +73,7 @@ const rule = {
 // Add or remove the redirect rule
  async function setRule(enabled) {
 	enabled = await validateEnabled(enabled);
-	
+
 	// If enabled, add rule. If not, remove it
 	const options = enabled ?
 	      { 
@@ -104,7 +98,8 @@ async function setIcon(enabled) {
 async function validateEnabled(enabled) {
 	if (enabled === undefined) {
 		const results = await chrome.storage.local.get('enabled');
-		enabled = results.enabled;
+		enabled = results.enabled === undefined ? true : results.enabled;
 	}
+
 	return enabled;
 }

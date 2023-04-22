@@ -31,7 +31,7 @@ const browsers = [
 	}
 ];
 
-validateVersions();
+if (!process.argv.includes('unpacked-only')) validateVersions();
 
 try {
 	fs.rmSync(buildDir, { recursive: true }); // Remove old build dir
@@ -39,7 +39,7 @@ try {
 		const unpackedDir = path.join(buildDir, browser.name, 'unpacked');
 		buildUnpacked(unpackedDir, browser);
 		addLicense(unpackedDir);
-		buildPacked(unpackedDir, browser);
+		if (!process.argv.includes('unpacked-only')) buildPacked(unpackedDir, browser);
 	});
 } catch (err) {
 	exitMsg = 'Failed to build: ' + err;

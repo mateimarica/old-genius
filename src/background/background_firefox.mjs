@@ -2,25 +2,21 @@
 
 import regex from '../modules/regex.mjs';
 
-// General initializing run, also runs when extension is set from disabled to enalbed
-initialize();
+// Set icon every time background script runs
+// This covers setting the icon when enabling the extension
+setIcon();
+
+// Set icon every time firefox starts up
+browser.runtime.onStartup.addListener(() => setIcon());
 
 // Listens for installs and updates
 browser.runtime.onInstalled.addListener((details) => {
 	// Enable old page and oneTimeConfirm on first install
 	if (details.reason === browser.runtime.OnInstalledReason.INSTALL) {
 		browser.storage.local.set({ enabled: true, oneTimeConfirm: true });
-		setRule(true);
-	} else {
-		initialize();
+		setRule();
 	}
 });
-
-// Set up rule and icon
-function initialize() {
-	setRule();
-	setIcon();
-}
 
 // Message listener
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -44,7 +40,6 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			});
 
 			setIcon(enabled);
-
 			sendResponse({ successful: true });
 		});
 	}
@@ -101,7 +96,8 @@ async function setIcon(enabled) {
 async function validateEnabled(enabled) {
 	if (enabled === undefined) {
 		const results = await browser.storage.local.get('enabled');
-		enabled = results.enabled;
+		enabled = results.enabled === undefined ? true : results.enabled;
 	}
+
 	return enabled;
 }
