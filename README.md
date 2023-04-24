@@ -8,8 +8,9 @@
 <br>
 
 ## Installation
-- **Chrome/Edge:** Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/old-genius-song-page-swit/dgdnchkkkknfdahaehnkfifchgnoidjj) or check the [latest release](https://github.com/mateimarica/old-genius/releases) to install manually.
-- **Firefox:** -coming soon-
+- **Chrome/Edge:** Install from the [Chrome Web Store](https://chrome.google.com/webstore/detail/old-genius-song-page-swit/dgdnchkkkknfdahaehnkfifchgnoidjj).
+- **Firefox:** Install from the [Firefox Add-on store](https://addons.mozilla.org/en-US/firefox/addon/old-genius).
+- *Manual installation*:  Check the [latest release](https://github.com/mateimarica/old-genius/releases) for instructions.
 
 ## Features
 - Switching between the old song page and the redesign will persist the state between pages.
