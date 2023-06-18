@@ -31,10 +31,12 @@ const browsers = [
 	}
 ];
 
-if (!process.argv.includes('unpacked-only')) validateVersions();
+if (!process.argv.includes('no-verify')) validateVersions();
 
 try {
-	fs.rmSync(buildDir, { recursive: true }); // Remove old build dir
+	if (fs.existsSync(buildDir))
+		fs.rmSync(buildDir, { recursive: true }); // Remove old build dir
+
 	browsers.forEach(browser => {
 		const unpackedDir = path.join(buildDir, browser.name, 'unpacked');
 		buildUnpacked(unpackedDir, browser);

@@ -3,7 +3,7 @@
 	"manifest_version": 2,
 	"name": "Old Genius (Song Page Switcher)",
 	"short_name": "Old Genius",
-	"version": "1.0.5",
+	"version": "1.0.5.1",
 	"description": "Switch between Genius's redesign and old song page, without it resetting when you click on another page.",
 	"content_security_policy": "default-src 'self'; frame-ancestors 'none';",
 	"browser_action": {
@@ -24,7 +24,7 @@
 	],
 	"background": {
 		"page": "background/background.html",
-		"persistent": false
+		"persistent": true
 	},
 	"permissions": [
 		"webRequest",

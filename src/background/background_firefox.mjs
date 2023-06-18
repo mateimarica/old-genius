@@ -5,9 +5,13 @@ import regex from '../modules/regex.mjs';
 // Set icon every time background script runs
 // This covers setting the icon when enabling the extension
 setIcon();
+setRule();
 
 // Set icon every time firefox starts up
-browser.runtime.onStartup.addListener(() => setIcon());
+browser.runtime.onStartup.addListener(() => {
+	setIcon();
+	setRule();
+});
 
 // Listens for installs and updates
 browser.runtime.onInstalled.addListener((details) => {
